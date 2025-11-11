@@ -23,24 +23,25 @@
 </template>
 
 <style scoped>
-header {
-  height: 3rem;
+.genre-list {
   display: flex;
-  background-color: black;
-  color: #fff;
-  font-size: 1.2rem;
-  padding-left: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
 }
 
-nav {
-  column-gap: 2rem;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
+.genre-item {
+  background-color: #387250;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  color: #fff;
 }
 
-nav a {
-  text-decoration: none;
-  color: #fff;
+.genre-item:hover {
+  cursor: pointer;
+  background-color: #4e9e5f;
+  box-shadow: 0 0 0.5rem #387250;
 }
 </style>
