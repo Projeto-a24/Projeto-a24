@@ -1,47 +1,36 @@
-<script setup>
-  import { ref, onMounted } from 'vue';
-  import api from './plugins/axios';
-
-  const moviesGenres = ref([]);
-  const TVGenres = ref([]);
-
-  onMounted(async () => {
-    let response = await api.get('genre/movie/list?language=pt-BR');
-    moviesGenres.value = response.data.genres;
-    response = await api.get('genre/tv/list?language=pt-BR');
-    TVGenres.value = response.data.genres;
-  });
-</script>
+<script setup></script>
 
 <template>
-  <h1>Filmes</h1>
-  <ul class="genre-list">
-    <li v-for="genre in genres" :key="genre.id" class="genre-item">
-      {{ genre.name }}
-    </li>
-  </ul>
+  <header>
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/actors">Atores</router-link>
+    </nav>
+  </header>
+  <main>
+    <router-view />
+  </main>
 </template>
 
 <style scoped>
-.genre-list {
+header {
+  height: 3rem;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2rem;
-  list-style: none;
-  padding: 0;
-}
-
-.genre-item {
-  background-color: #387250;
-  border-radius: 1rem;
-  padding: 0.5rem 1rem;
+  background-color: black;
   color: #fff;
+  font-size: 1.2rem;
+  padding-left: 2rem;
 }
 
-.genre-item:hover {
-  cursor: pointer;
-  background-color: #4e9e5f;
-  box-shadow: 0 0 0.5rem #387250;
+nav {
+  column-gap: 2rem;
+  margin-bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: #fff;
 }
 </style>
