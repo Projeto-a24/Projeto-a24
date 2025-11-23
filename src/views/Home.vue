@@ -6,6 +6,7 @@ import { useGenreStore } from '@/stores/genre';
 import { useRouter } from 'vue-router';
 
 import Hero from '@/components/Hero.vue';
+import BrandSection from '@/components/BrandSection.vue';
 import GenreCarousel from '@/components/GenreCarousel.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 
@@ -102,7 +103,6 @@ onUnmounted(() => {
   <div class="a24-home">
     <loading v-model:active="isLoading" is-full-page />
 
-    <!-- Hero de filmes em destaque -->
     <Hero
       :featured-movies="featuredMovies"
       :current-index="currentFeaturedIndex"
@@ -112,13 +112,8 @@ onUnmounted(() => {
       @open="openMovie"
     />
 
-    <!-- Seção da marca -->
-    <section class="brand-section">
-      <h2 class="brand-title">A24 FILMS</h2>
-      <p class="brand-subtitle">Cinema independente de alta qualidade</p>
-    </section>
+    <BrandSection />
 
-    <!-- Carrossel de gêneros -->
     <GenreCarousel
       :genres="genreStore.genres"
       :current-genre-id="genreStore.currentGenreId"
@@ -127,7 +122,6 @@ onUnmounted(() => {
       @reset="resetFilter"
     />
 
-    <!-- Grid de filmes -->
     <MoviesGrid
       :movies="movies"
       :title="genreStore.currentGenreId ? 'Filmes Filtrados' : 'Catálogo Completo'"
@@ -141,33 +135,5 @@ onUnmounted(() => {
   background-color: #0a0a0a;
   min-height: 100vh;
   color: #ffffff;
-}
-
-.brand-section {
-  text-align: center;
-  padding: 6rem 2rem 4rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.brand-title {
-  font-size: 5rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-}
-
-.brand-subtitle {
-  font-size: 1rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #888;
-  margin-top: 1rem;
-}
-
-@media (max-width: 768px) {
-  .brand-title {
-    font-size: 3rem;
-  }
 }
 </style>

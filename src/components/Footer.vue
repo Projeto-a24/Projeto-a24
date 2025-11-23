@@ -5,13 +5,11 @@ const currentYear = new Date().getFullYear();
 <template>
   <footer class="a24-footer">
     <div class="footer-container">
-      <!-- Brand Section -->
       <div class="footer-brand">
         <h3 class="footer-logo">A24</h3>
         <p class="footer-tagline">Cinema independente de alta qualidade</p>
       </div>
 
-      <!-- Links Section -->
       <div class="footer-links">
         <div class="footer-column">
           <h4 class="footer-title">Navegação</h4>
@@ -22,26 +20,16 @@ const currentYear = new Date().getFullYear();
         </div>
 
         <div class="footer-column">
-          <h4 class="footer-title">Sobre</h4>
-          <ul class="footer-list">
-            <li><a href="#" class="footer-link">Sobre A24</a></li>
-            <li><a href="#" class="footer-link">Contato</a></li>
-            <li><a href="#" class="footer-link">Imprensa</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-column">
           <h4 class="footer-title">Redes Sociais</h4>
           <ul class="footer-list">
-            <li><a href="#" class="footer-link">Instagram</a></li>
-            <li><a href="#" class="footer-link">Twitter</a></li>
-            <li><a href="#" class="footer-link">YouTube</a></li>
+            <li><a href="https://instagram.com/a24" target="_blank" rel="noopener" class="footer-link">Instagram</a></li>
+            <li><a href="https://twitter.com/a24" target="_blank" rel="noopener" class="footer-link">Twitter</a></li>
+            <li><a href="https://youtube.com/a24" target="_blank" rel="noopener" class="footer-link">YouTube</a></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- Bottom Bar -->
     <div class="footer-bottom">
       <p class="footer-copyright">
         © {{ currentYear }} A24 FILMS. Todos os direitos reservados.
@@ -66,11 +54,10 @@ const currentYear = new Date().getFullYear();
   margin: 0 auto;
   padding: 5rem 2rem 3rem 2rem;
   display: grid;
-  grid-template-columns: 1.5fr 2fr;
+  grid-template-columns: 1.5fr 1fr;
   gap: 4rem;
 }
 
-/* Brand Section */
 .footer-brand {
   display: flex;
   flex-direction: column;
@@ -93,11 +80,10 @@ const currentYear = new Date().getFullYear();
   max-width: 300px;
 }
 
-/* Links Section */
 .footer-links {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3rem;
 }
 
 .footer-column {
@@ -137,7 +123,6 @@ const currentYear = new Date().getFullYear();
   color: #ffffff;
 }
 
-/* Bottom Bar */
 .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 2rem;
@@ -167,13 +152,6 @@ const currentYear = new Date().getFullYear();
   color: #01b869;
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .footer-links {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
   .footer-container {
     grid-template-columns: 1fr;
@@ -183,6 +161,7 @@ const currentYear = new Date().getFullYear();
 
   .footer-links {
     grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .footer-logo {
