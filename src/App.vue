@@ -1,36 +1,107 @@
-<script setup></script>
+<script setup>
+import Header from '@/components/Header.vue';
+import Footer from '@/components/Footer.vue';
+</script>
 
 <template>
-  <header>
-    <nav>
-      <router-link to="/">Home</router-link>
-      <router-link to="/actors">Atores</router-link>
-    </nav>
-  </header>
-  <main>
-    <router-view />
-  </main>
+  <div class="app-wrapper">
+    <Header />
+    <main class="main-content">
+      <router-view />
+    </main>
+    <Footer />
+  </div>
 </template>
 
-<style scoped>
-header {
-  height: 3rem;
-  display: flex;
-  background-color: black;
-  color: #fff;
-  font-size: 1.2rem;
-  padding-left: 2rem;
+<style>
+/* Reset e estilos globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-nav {
-  column-gap: 2rem;
-  margin-bottom: 0;
-  display: flex;
-  align-items: center;
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  overflow-x: hidden;
 }
 
-nav a {
-  text-decoration: none;
-  color: #fff;
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
+.app-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #0a0a0a;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+/* Suporte para Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #333333 #0a0a0a;
+}
+
+/* Transições suaves para rotas */
+.router-view {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Acessibilidade - foco visível */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* Seleção de texto */
+::selection {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+::-moz-selection {
+  background-color: #ffffff;
+  color: #000000;
 }
 </style>
