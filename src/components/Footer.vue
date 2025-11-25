@@ -16,6 +16,7 @@ const currentYear = new Date().getFullYear();
           <ul class="footer-list">
             <li><router-link to="/" class="footer-link">Filmes</router-link></li>
             <li><router-link to="/actors" class="footer-link">Atores</router-link></li>
+            <li><router-link to="/directors" class="footer-link">Diretores</router-link></li>
           </ul>
         </div>
 

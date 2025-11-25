@@ -50,6 +50,7 @@ onUnmounted(() => {
       <nav class="desktop-nav">
         <router-link to="/" class="nav-link">Filmes</router-link>
         <router-link to="/actors" class="nav-link">Atores</router-link>
+        <router-link to="/directors" class="nav-link">Diretores</router-link>
       </nav>
 
       <button
@@ -70,6 +71,9 @@ onUnmounted(() => {
         </router-link>
         <router-link to="/actors" class="mobile-nav-link" @click="isMobileMenuOpen = false">
           Atores
+        </router-link>
+        <router-link to="/directors" class="mobile-nav-link" @click="isMobileMenuOpen = false">
+          Diretores
         </router-link>
       </nav>
     </transition>
