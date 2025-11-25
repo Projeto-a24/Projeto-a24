@@ -27,10 +27,4 @@
   color: #888;
   margin-top: 1rem;
 }
-
-@media (max-width: 768px) {
-  .brand-title {
-    font-size: 3rem;
-  }
-}
 </style>

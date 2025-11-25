@@ -80,14 +80,4 @@ const props = defineProps({
   letter-spacing: 0.05em;
 }
 
-@media (max-width: 768px) {
-  .companies-grid {
-    gap: 1.5rem;
-  }
-
-  .company-logo {
-    max-width: 100px;
-    max-height: 40px;
-  }
-}
 </style>

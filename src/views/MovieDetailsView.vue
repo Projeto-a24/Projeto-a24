@@ -42,14 +42,12 @@ onMounted(async () => {
   isLoading.value = true;
   try {
     await movieStore.getMovieDetail(Number(props.movieId));
-    
-    // Buscar elenco
+
     const creditsResponse = await api.get(`movie/${props.movieId}/credits`, {
       params: { language: 'pt-BR' }
     });
     cast.value = creditsResponse.data.cast.slice(0, 12);
 
-    // Buscar trailer
     const videosResponse = await api.get(`movie/${props.movieId}/videos`, {
       params: { language: 'pt-BR' }
     });
@@ -70,20 +68,20 @@ onMounted(async () => {
   <div class="movie-details-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <MovieDetailsHero 
-      :movie="movie" 
+    <MovieDetailsHero
+      :movie="movie"
       :trailer="trailer"
       @go-back="goBack"
       @open-trailer="openTrailer"
     />
 
-    <MovieCastSection 
-      :cast="cast" 
-      @open-actor="openActor" 
+    <MovieCastSection
+      :cast="cast"
+      @open-actor="openActor"
     />
 
-    <MovieCompaniesSection 
-      :companies="movie.production_companies || []" 
+    <MovieCompaniesSection
+      :companies="movie.production_companies || []"
     />
   </div>
 </template>

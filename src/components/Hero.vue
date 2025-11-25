@@ -180,21 +180,4 @@ const currentMovie = computed(() =>
   border-radius: 4px;
 }
 
-@media (max-width: 768px) {
-  .hero {
-    margin-top: 3rem;
-  }
-
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .hero-content {
-    padding: 2rem;
-  }
-
-  .hero-nav {
-    right: 2rem;
-  }
-}
 </style>

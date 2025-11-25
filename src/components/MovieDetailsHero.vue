@@ -74,7 +74,7 @@ const formatRuntime = (minutes) => {
         </div>
 
         <p v-if="movie.tagline" class="movie-tagline">{{ movie.tagline }}</p>
-        
+
         <p v-if="movie.overview" class="movie-overview">{{ movie.overview }}</p>
 
         <div class="action-buttons">
@@ -290,35 +290,4 @@ const formatRuntime = (minutes) => {
   }
 }
 
-@media (max-width: 768px) {
-  .details-hero {
-    padding: 5rem 1.5rem 2rem 1.5rem;
-    background-image: linear-gradient(to bottom, rgba(10,10,10,0.7) 0%, rgba(10,10,10,0.95) 100%) !important;
-  }
-
-  .details-content {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .poster-container {
-    position: relative;
-    top: 0;
-    max-width: 250px;
-    margin: 0 auto;
-  }
-
-  .movie-title {
-    font-size: 2.2rem;
-  }
-
-  .movie-tagline {
-    font-size: 1rem;
-  }
-
-  .info-compact {
-    flex-direction: column;
-    gap: 1rem;
-  }
-}
 </style>

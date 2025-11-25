@@ -14,7 +14,6 @@ import Footer from '@/components/Footer.vue';
 </template>
 
 <style>
-/* Reset e estilos globais */
 * {
   margin: 0;
   padding: 0;
@@ -33,7 +32,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
 
 .app-wrapper {
@@ -47,7 +45,6 @@ body {
   flex: 1;
 }
 
-/* Scrollbar personalizada */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -65,13 +62,11 @@ body {
   background: #555555;
 }
 
-/* Suporte para Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: #333333 #0a0a0a;
 }
 
-/* Transições suaves para rotas */
 .router-view {
   animation: fadeIn 0.3s ease-in;
 }
@@ -87,14 +82,12 @@ body {
   }
 }
 
-/* Acessibilidade - foco visível */
 a:focus-visible,
 button:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
 
-/* Seleção de texto */
 ::selection {
   background-color: #ffffff;
   color: #000000;

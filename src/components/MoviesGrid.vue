@@ -133,11 +133,5 @@ const formatDate = (date) =>
   font-weight: 600;
 }
 
-@media (max-width: 768px) {
-  .movies-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 1.5rem;
-  }
-}
 </style>
 

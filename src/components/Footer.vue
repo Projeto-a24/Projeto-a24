@@ -152,24 +152,4 @@ const currentYear = new Date().getFullYear();
   color: #01b869;
 }
 
-@media (max-width: 768px) {
-  .footer-container {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    padding: 3rem 1.5rem 2rem 1.5rem;
-  }
-
-  .footer-links {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .footer-logo {
-    font-size: 2.5rem;
-  }
-
-  .footer-bottom {
-    padding: 1.5rem;
-  }
-}
 </style>

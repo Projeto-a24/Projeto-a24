@@ -13,21 +13,21 @@ const toggleMobileMenu = () => {
 
 const handleScroll = () => {
   const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-  
+
   if (currentScrollPosition < 10) {
     isHeaderVisible.value = true;
     lastScrollPosition.value = currentScrollPosition;
     return;
   }
-  
+
   if (currentScrollPosition > lastScrollPosition.value && currentScrollPosition > 100) {
     isHeaderVisible.value = false;
     isMobileMenuOpen.value = false;
-  } 
+  }
   else if (currentScrollPosition < lastScrollPosition.value) {
     isHeaderVisible.value = true;
   }
-  
+
   lastScrollPosition.value = currentScrollPosition;
 };
 
@@ -52,8 +52,8 @@ onUnmounted(() => {
         <router-link to="/actors" class="nav-link">Atores</router-link>
       </nav>
 
-      <button 
-        class="mobile-menu-btn" 
+      <button
+        class="mobile-menu-btn"
         @click="toggleMobileMenu"
         :class="{ active: isMobileMenuOpen }"
       >
@@ -103,7 +103,6 @@ onUnmounted(() => {
   align-items: center;
 }
 
-/* Logo */
 .logo {
   text-decoration: none;
   display: flex;
@@ -123,7 +122,6 @@ onUnmounted(() => {
   opacity: 0.7;
 }
 
-/* Desktop Navigation */
 .desktop-nav {
   display: flex;
   gap: 2rem;
@@ -145,7 +143,6 @@ onUnmounted(() => {
   color: #ffffff;
 }
 
-/* Mobile Menu Button */
 .mobile-menu-btn {
   display: none;
   flex-direction: column;
@@ -176,7 +173,6 @@ onUnmounted(() => {
   transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile Navigation */
 .mobile-nav {
   display: none;
   flex-direction: column;
@@ -201,7 +197,6 @@ onUnmounted(() => {
   color: #ffffff;
 }
 
-/* Transitions */
 .slide-down-enter-active,
 .slide-down-leave-active {
   transition: all 0.3s ease;
@@ -217,26 +212,4 @@ onUnmounted(() => {
   transform: translateY(-10px);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .desktop-nav {
-    display: none;
-  }
-
-  .mobile-menu-btn {
-    display: flex;
-  }
-
-  .mobile-nav {
-    display: flex;
-  }
-
-  .header-container {
-    padding: 0.7rem 1.5rem;
-  }
-
-  .logo-text {
-    font-size: 1.2rem;
-  }
-}
 </style>

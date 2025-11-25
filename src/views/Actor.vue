@@ -53,7 +53,6 @@ const prevFeatured = () => {
 onMounted(async () => {
   await getA24Actors();
 
-  // Auto-advance carousel
   featuredIntervalId = setInterval(() => {
     nextFeatured();
   }, 5000);
@@ -70,7 +69,6 @@ onUnmounted(() => {
   <div class="actors-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <!-- Hero de atores em destaque -->
     <ActorHero
       :featured-actors="featuredActors"
       :current-index="currentFeaturedIndex"
@@ -80,13 +78,11 @@ onUnmounted(() => {
       @open="openActor"
     />
 
-    <!-- Seção da marca -->
     <section class="brand-section">
       <h2 class="brand-title">ELENCO A24</h2>
       <p class="brand-subtitle">Conheça os talentos por trás das grandes produções</p>
     </section>
 
-    <!-- Grid de atores -->
     <ActorsGrid
       :actors="actors"
       title="Todos os Atores"

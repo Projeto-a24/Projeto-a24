@@ -30,18 +30,15 @@ const openMovie = (movieId) => {
 onMounted(async () => {
   isLoading.value = true;
   try {
-    // Buscar detalhes do ator
     const actorResponse = await api.get(`person/${props.actorId}`, {
       params: { language: 'pt-BR' }
     });
     actor.value = actorResponse.data;
 
-    // Buscar créditos (filmografia)
     const creditsResponse = await api.get(`person/${props.actorId}/combined_credits`, {
       params: { language: 'pt-BR' }
     });
-    
-    // Combinar e ordenar por data de lançamento
+
     const allCredits = [
       ...creditsResponse.data.cast.map(item => ({
         ...item,
@@ -72,14 +69,14 @@ onMounted(async () => {
   <div class="actor-details-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <ActorDetailsHero 
-      :actor="actor" 
-      @go-back="goBack" 
+    <ActorDetailsHero
+      :actor="actor"
+      @go-back="goBack"
     />
 
-    <ActorFilmography 
-      :credits="credits" 
-      @open-movie="openMovie" 
+    <ActorFilmography
+      :credits="credits"
+      @open-movie="openMovie"
     />
   </div>
 </template>

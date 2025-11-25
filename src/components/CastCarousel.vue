@@ -202,14 +202,4 @@ const scrollCast = (direction) => {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 768px) {
-  .cast-card {
-    width: 120px;
-  }
-
-  .cast-photo-wrapper {
-    width: 120px;
-    height: 120px;
-  }
-}
 </style>

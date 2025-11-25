@@ -241,21 +241,5 @@ const setFilter = (type) => {
   font-size: 1.1rem;
 }
 
-@media (max-width: 768px) {
-  .filmography-header {
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: flex-start;
-  }
 
-  .filter-buttons {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .credits-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1.5rem;
-  }
-}
 </style>
