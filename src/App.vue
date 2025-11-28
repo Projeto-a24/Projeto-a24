@@ -1,15 +1,53 @@
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import Header from '@/components/Header.vue';
 import Footer from '@/components/Footer.vue';
+import SearchBar from '@/components/SearchBar.vue';
+
+const router = useRouter();
+const isSearchOpen = ref(false);
+
+// Função para abrir a busca (será chamada pelo Header via evento)
+const openSearch = () => {
+  isSearchOpen.value = true;
+};
+
+// Função para fechar a busca
+const closeSearch = () => {
+  isSearchOpen.value = false;
+};
+
+// Função para lidar com seleção de resultado
+const handleSelectResult = (result) => {
+  console.log('Resultado selecionado:', result);
+
+  if (result.type === 'movie') {
+    router.push({ name: 'MovieDetails', params: { movieId: result.id } });
+  } else if (result.type === 'actor') {
+    router.push({ name: 'ActorDetails', params: { actorId: result.id } });
+  } else if (result.type === 'director') {
+    router.push({ name: 'DirectorDetails', params: { directorId: result.id } });
+  }
+
+  closeSearch();
+};
 </script>
 
 <template>
   <div class="app-wrapper">
-    <Header />
+    <Header @open-search="openSearch" />
+
     <main class="main-content">
       <router-view />
     </main>
+
     <Footer />
+    <SearchBar
+      :is-open="isSearchOpen"
+      @close="closeSearch"
+      @select-result="handleSelectResult"
+    />
   </div>
 </template>
 
@@ -39,6 +77,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #0a0a0a;
+  position: relative;
 }
 
 .main-content {
