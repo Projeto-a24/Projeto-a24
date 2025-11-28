@@ -30,33 +30,48 @@ const openMovie = (movieId) => {
 onMounted(async () => {
   isLoading.value = true;
   try {
+    // Buscar detalhes do ator
     const actorResponse = await api.get(`person/${props.actorId}`, {
       params: { language: 'pt-BR' }
     });
     actor.value = actorResponse.data;
 
+    // Buscar créditos (filmografia)
     const creditsResponse = await api.get(`person/${props.actorId}/combined_credits`, {
       params: { language: 'pt-BR' }
     });
+    
+    // Usar Map para evitar duplicatas baseado no ID
+    const creditsMap = new Map();
+    
+    // Processar cast
+    creditsResponse.data.cast.forEach(item => {
+      if (item.poster_path && !creditsMap.has(item.id)) {
+        creditsMap.set(item.id, {
+          ...item,
+          media_type: item.media_type || 'movie'
+        });
+      }
+    });
+    
+    // Processar crew (apenas se tiver poster e não existir no cast)
+    creditsResponse.data.crew.forEach(item => {
+      if (item.poster_path && !creditsMap.has(item.id)) {
+        creditsMap.set(item.id, {
+          ...item,
+          media_type: item.media_type || 'movie'
+        });
+      }
+    });
 
-    const allCredits = [
-      ...creditsResponse.data.cast.map(item => ({
-        ...item,
-        media_type: item.media_type || 'movie'
-      })),
-      ...creditsResponse.data.crew.map(item => ({
-        ...item,
-        media_type: item.media_type || 'movie'
-      }))
-    ];
-
-    credits.value = allCredits
+    // Converter Map para array e ordenar
+    credits.value = Array.from(creditsMap.values())
       .sort((a, b) => {
         const dateA = new Date(a.release_date || a.first_air_date || '1900-01-01');
         const dateB = new Date(b.release_date || b.first_air_date || '1900-01-01');
         return dateB - dateA;
       })
-      .slice(0, 20);
+      .slice(0, 30); // Limitar a 30 trabalhos
 
   } catch (error) {
     console.error('Erro ao buscar detalhes do ator:', error);
@@ -69,14 +84,14 @@ onMounted(async () => {
   <div class="actor-details-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <ActorDetailsHero
-      :actor="actor"
-      @go-back="goBack"
+    <ActorDetailsHero 
+      :actor="actor" 
+      @go-back="goBack" 
     />
 
-    <ActorFilmography
-      :credits="credits"
-      @open-movie="openMovie"
+    <ActorFilmography 
+      :credits="credits" 
+      @open-movie="openMovie" 
     />
   </div>
 </template>

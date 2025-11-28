@@ -29,17 +29,17 @@ const getA24Directors = async () => {
 
     // Extrair diretores únicos dos filmes
     const directorsMap = new Map();
-
+    
     for (const movie of moviesResponse.data.results.slice(0, 30)) {
       try {
         const creditsResponse = await api.get(`movie/${movie.id}/credits`, {
           params: { language: 'pt-BR' }
         });
-
+        
         const movieDirectors = creditsResponse.data.crew.filter(
           person => person.job === 'Director'
         );
-
+        
         for (const director of movieDirectors) {
           if (!directorsMap.has(director.id)) {
             directorsMap.set(director.id, {
@@ -47,7 +47,7 @@ const getA24Directors = async () => {
               name: director.name,
               profile_path: director.profile_path,
               popularity: director.popularity || 0,
-              known_for_department: 'Directing',
+              known_for_department: 'Direção',
             });
           }
         }
@@ -58,7 +58,7 @@ const getA24Directors = async () => {
 
     const directorsArray = Array.from(directorsMap.values())
       .sort((a, b) => b.popularity - a.popularity);
-
+    
     directors.value = directorsArray;
     featuredDirectors.value = directorsArray.slice(0, 5);
   } catch (error) {
@@ -105,7 +105,6 @@ onUnmounted(() => {
   <div class="directors-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <!-- Hero de diretores em destaque -->
     <DirectorHero
       :featured-directors="featuredDirectors"
       :current-index="currentFeaturedIndex"
@@ -115,13 +114,11 @@ onUnmounted(() => {
       @open="openDirector"
     />
 
-    <!-- Seção da marca -->
     <section class="brand-section">
       <h2 class="brand-title">DIRETORES A24</h2>
       <p class="brand-subtitle">Visionários por trás das produções aclamadas</p>
     </section>
 
-    <!-- Grid de diretores -->
     <DirectorsGrid
       :directors="directors"
       title="Todos os Diretores"
