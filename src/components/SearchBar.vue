@@ -11,79 +11,78 @@ const emit = defineEmits(['close', 'select-result']);
 const searchQuery = ref('');
 const searchResults = ref([]);
 const isSearching = ref(false);
-let searchTimeout = null;
+const noResultsFound = ref(false);
 
 const performSearch = async () => {
-  const query = searchQuery.value.trim();
+ const query = searchQuery.value.trim();
 
-  if (query.length < 2) {
-    searchResults.value = [];
-    return;
-  }
+ noResultsFound.value = false;
 
-  isSearching.value = true;
+ if (query.length < 2) {
   searchResults.value = [];
+  return;
+ }
 
-  try {
-    // Buscar filmes
-    const moviesRes = await api.get('search/movie', {
-      params: {
-        query: query,
-        language: 'pt-BR',
-        page: 1,
-      },
-    });
+ isSearching.value = true;
+ searchResults.value = [];
 
-    // Buscar pessoas
-    const peopleRes = await api.get('search/person', {
-      params: {
-        query: query,
-        language: 'pt-BR',
-        page: 1,
-      },
-    });
+ try {
+  const moviesRes = await api.get('search/movie', {
+   params: {
+    query: query,
+    language: 'pt-BR',
+    page: 1,
+   },
+  });
 
-    // Processar filmes A24
-    const movies = [];
-    for (const movie of moviesRes.data.results.slice(0, 5)) {
-      try {
-        const details = await api.get(`movie/${movie.id}`);
-        const isA24 = details.data.production_companies?.some(c => c.id === 41077);
+  const peopleRes = await api.get('search/person', {
+   params: {
+    query: query,
+    language: 'pt-BR',
+    page: 1,
+   },
+  });
 
-        if (isA24) {
-          movies.push({
-            id: movie.id,
-            title: movie.title,
-            poster: movie.poster_path,
-            type: 'movie',
-            year: movie.release_date ? movie.release_date.split('-')[0] : '',
-          });
-        }
-      } catch (err) {
-        console.error('Erro ao verificar filme:', err);
-      }
+  const movies = [];
+  for (const movie of moviesRes.data.results.slice(0, 5)) {
+   try {
+    const details = await api.get(`movie/${movie.id}`);
+    const isA24 = details.data.production_companies?.some(c => c.id === 41077);
+
+    if (isA24) {
+     movies.push({
+      id: movie.id,
+      title: movie.title,
+      poster: movie.poster_path,
+      type: 'movie',
+      year: movie.release_date ? movie.release_date.split('-')[0] : '',
+     });
     }
-
-    // Processar pessoas
-    const people = peopleRes.data.results.slice(0, 5).map(p => ({
-      id: p.id,
-      title: p.name,
-      poster: p.profile_path,
-      type: p.known_for_department === 'Directing' ? 'director' : 'actor',
-      subtitle: p.known_for_department === 'Directing' ? 'Diretor' : 'Ator',
-    }));
-
-    searchResults.value = [...movies, ...people];
-  } catch (error) {
-    console.error('Erro na busca:', error);
-  } finally {
-    isSearching.value = false;
+   } catch (err) {
+    console.error('Erro ao verificar filme:', err);
+   }
   }
-};
 
-const handleInput = () => {
-  clearTimeout(searchTimeout);
-  searchTimeout = setTimeout(performSearch, 500);
+  const people = peopleRes.data.results.slice(0, 5).map(p => ({
+   id: p.id,
+   title: p.name,
+   poster: p.profile_path,
+   type: p.known_for_department === 'Directing' ? 'director' : 'actor',
+   subtitle: p.known_for_department === 'Directing' ? 'Diretor' : 'Ator',
+  }));
+
+  searchResults.value = [...movies, ...people];
+
+  if (searchResults.value.length === 0) {
+   noResultsFound.value = true;
+  }
+
+ } catch (error) {
+  console.error('Erro na busca:', error);
+  noResultsFound.value = true;
+ } finally {
+  isSearching.value = false;
+ }
 };
 
 const selectResult = (result) => {
@@ -92,17 +91,19 @@ const selectResult = (result) => {
 };
 
 const closeSearch = () => {
-  emit('close');
-  searchQuery.value = '';
-  searchResults.value = [];
+ emit('close');
+ searchQuery.value = '';
+ searchResults.value = [];
+ noResultsFound.value = false;
 };
 
 watch(() => props.isOpen, (value) => {
-  if (!value) {
-    searchQuery.value = '';
-    searchResults.value = [];
-  }
-});
+ if (!value) {
+  searchQuery.value = '';
+  searchResults.value = [];
+  noResultsFound.value = false;
+ }
+});;
 </script>
 
 <template>
@@ -110,11 +111,10 @@ watch(() => props.isOpen, (value) => {
     <Transition name="search-fade">
       <div v-if="isOpen" class="search-overlay" @click.self="closeSearch">
         <div class="search-box">
-          <!-- Header -->
           <div class="search-top">
             <input
               v-model="searchQuery"
-              @input="handleInput"
+              @keyup.enter="performSearch"
               type="text"
               class="search-field"
               placeholder="Buscar filmes, atores, diretores..."
@@ -123,13 +123,11 @@ watch(() => props.isOpen, (value) => {
             <button @click="closeSearch" class="btn-close">✕</button>
           </div>
 
-          <!-- Loading -->
           <div v-if="isSearching" class="search-status">
             <div class="spinner"></div>
             <p>Buscando...</p>
           </div>
 
-          <!-- Results -->
           <div v-else-if="searchResults.length > 0" class="results-list">
             <div
               v-for="item in searchResults"
@@ -157,16 +155,13 @@ watch(() => props.isOpen, (value) => {
               </div>
             </div>
           </div>
+          <div v-else-if="noResultsFound" class="search-status">
+      <p>Nenhum resultado para "{{ searchQuery }}"</p>
+     </div>
 
-          <!-- No Results -->
-          <div v-else-if="searchQuery.length >= 2 && !isSearching" class="search-status">
-            <p>Nenhum resultado para "{{ searchQuery }}"</p>
-          </div>
-
-          <!-- Empty -->
           <div v-else class="search-status">
-            <p>Digite pelo menos 2 caracteres</p>
-          </div>
+      <p>Digite pelo menos 2 caracteres e pressione Enter</p>
+     </div>
         </div>
       </div>
     </Transition>
@@ -175,18 +170,18 @@ watch(() => props.isOpen, (value) => {
 
 <style scoped>
 .search-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.95);
-  z-index: 10000;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 100px 20px 20px;
-  overflow-y: auto;
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0, 0, 0, 0.95);
+z-index: 10000;
+display: flex;
+align-items: flex-start;
+justify-content: center;
+padding: 50px 20px;
+overflow-y: auto;
 }
 
 .search-box {
