@@ -14,47 +14,83 @@ const props = defineProps({
 
 const emit = defineEmits(['next', 'prev', 'select', 'open']);
 
-const currentActor = computed(() =>
-  props.featuredActors.length ? props.featuredActors[props.currentIndex] : null
-);
+const currentPair = computed(() => {
+  if (!props.featuredActors.length) return [];
+  const first = props.featuredActors[props.currentIndex];
+  const second = props.featuredActors[(props.currentIndex + 1) % props.featuredActors.length];
+  return [first, second];
+});
+
+const totalPairs = computed(() => Math.ceil(props.featuredActors.length / 2));
 </script>
 
 <template>
-  <section class="hero" v-if="featuredActors.length > 0 && currentActor">
-    <div
-      class="hero-background"
-      :style="{
-        backgroundImage: `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(https://image.tmdb.org/t/p/original${currentActor.profile_path})`
-      }"
-    >
-      <div class="hero-content">
-        <div class="hero-text">
-          <span class="hero-label">Ator em Destaque</span>
-          <h1 class="hero-title">{{ currentActor.name }}</h1>
-          <p class="hero-overview" v-if="currentActor.known_for_department">
-            {{ currentActor.known_for_department }}
-          </p>
-          <button
-            class="hero-btn"
-            @click="emit('open', currentActor.id)"
-          >
-            Ver Perfil
-          </button>
+  <section class="hero" v-if="featuredActors.length > 0 && currentPair.length">
+    <div class="hero-split">
+      <div
+        class="hero-half left"
+        :style="{
+          backgroundImage: currentPair[0]?.profile_path
+            ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(https://image.tmdb.org/t/p/original${currentPair[0].profile_path})`
+            : 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%)'
+        }"
+        @click="emit('open', currentPair[0]?.id)"
+      >
+        <div class="hero-content">
+          <div class="hero-text">
+            <span class="hero-label">Ator em Destaque</span>
+            <h1 class="hero-title">{{ currentPair[0]?.name }}</h1>
+            <p class="hero-overview" v-if="currentPair[0]?.known_for_department">
+              {{ currentPair[0].known_for_department }}
+            </p>
+            <button
+              class="hero-btn"
+              @click.stop="emit('open', currentPair[0]?.id)"
+            >
+              Ver Perfil
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="hero-nav">
-        <button @click="emit('prev')" class="hero-nav-btn">‹</button>
-        <div class="hero-indicators">
-          <span
-            v-for="(actor, index) in featuredActors"
-            :key="actor.id"
-            :class="['indicator', { active: index === currentIndex }]"
-            @click="emit('select', index)"
-          ></span>
+      <div
+        class="hero-half right"
+        :style="{
+          backgroundImage: currentPair[1]?.profile_path
+            ? `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%), url(https://image.tmdb.org/t/p/original${currentPair[1].profile_path})`
+            : 'linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%)'
+        }"
+        @click="emit('open', currentPair[1]?.id)"
+      >
+        <div class="hero-content">
+          <div class="hero-text">
+            <span class="hero-label">Ator em Destaque</span>
+            <h1 class="hero-title">{{ currentPair[1]?.name }}</h1>
+            <p class="hero-overview" v-if="currentPair[1]?.known_for_department">
+              {{ currentPair[1].known_for_department }}
+            </p>
+            <button
+              class="hero-btn"
+              @click.stop="emit('open', currentPair[1]?.id)"
+            >
+              Ver Perfil
+            </button>
+          </div>
         </div>
-        <button @click="emit('next')" class="hero-nav-btn">›</button>
       </div>
+    </div>
+
+    <div class="hero-nav">
+      <button @click="emit('prev')" class="hero-nav-btn">‹</button>
+      <div class="hero-indicators">
+        <span
+          v-for="index in totalPairs"
+          :key="index"
+          :class="['indicator', { active: Math.floor(currentIndex / 2) === index - 1 }]"
+          @click="emit('select', (index - 1) * 2)"
+        ></span>
+      </div>
+      <button @click="emit('next')" class="hero-nav-btn">›</button>
     </div>
   </section>
 </template>
@@ -68,8 +104,14 @@ const currentActor = computed(() =>
   margin-top: 3.5rem;
 }
 
-.hero-background {
+.hero-split {
+  display: flex;
   width: 100%;
+  height: 100%;
+}
+
+.hero-half {
+  width: 50%;
   height: 100%;
   background-size: cover;
   background-position: center 20%;
@@ -77,6 +119,15 @@ const currentActor = computed(() =>
   display: flex;
   align-items: flex-end;
   position: relative;
+  cursor: pointer;
+}
+
+.hero-half:hover {
+  filter: brightness(1.1);
+}
+
+.hero-half.left {
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .hero-content {
@@ -86,7 +137,7 @@ const currentActor = computed(() =>
 }
 
 .hero-text {
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .hero-label {
@@ -101,7 +152,7 @@ const currentActor = computed(() =>
 
 .hero-title {
   font-family: 'Playfair Display', serif;
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: 700;
   margin: 0 0 1.5rem 0;
   line-height: 1.1;
@@ -109,11 +160,11 @@ const currentActor = computed(() =>
 }
 
 .hero-overview {
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1.6;
   color: #e0e0e0;
   margin-bottom: 2rem;
-  max-width: 500px;
+  max-width: 400px;
 }
 
 .hero-btn {

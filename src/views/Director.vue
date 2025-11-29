@@ -29,17 +29,17 @@ const getA24Directors = async () => {
 
     // Extrair diretores únicos dos filmes
     const directorsMap = new Map();
-    
+
     for (const movie of moviesResponse.data.results.slice(0, 30)) {
       try {
         const creditsResponse = await api.get(`movie/${movie.id}/credits`, {
           params: { language: 'pt-BR' }
         });
-        
+
         const movieDirectors = creditsResponse.data.crew.filter(
           person => person.job === 'Director'
         );
-        
+
         for (const director of movieDirectors) {
           if (!directorsMap.has(director.id)) {
             directorsMap.set(director.id, {
@@ -58,9 +58,9 @@ const getA24Directors = async () => {
 
     const directorsArray = Array.from(directorsMap.values())
       .sort((a, b) => b.popularity - a.popularity);
-    
+
     directors.value = directorsArray;
-    featuredDirectors.value = directorsArray.slice(0, 5);
+    featuredDirectors.value = directorsArray.slice(0, 6); // 6 para ter 3 pares
   } catch (error) {
     console.error('Erro ao buscar diretores:', error);
   }
@@ -73,25 +73,27 @@ const openDirector = (directorId) => {
 
 const nextFeatured = () => {
   if (!featuredDirectors.value.length) return;
+  // Avança 2 posições para mudar o par
   currentFeaturedIndex.value =
-    (currentFeaturedIndex.value + 1) % featuredDirectors.value.length;
+    (currentFeaturedIndex.value + 2) % featuredDirectors.value.length;
 };
 
 const prevFeatured = () => {
   if (!featuredDirectors.value.length) return;
+  // Volta 2 posições para mudar o par
   currentFeaturedIndex.value =
-    currentFeaturedIndex.value === 0
-      ? featuredDirectors.value.length - 1
-      : currentFeaturedIndex.value - 1;
+    currentFeaturedIndex.value - 2 < 0
+      ? featuredDirectors.value.length - 2
+      : currentFeaturedIndex.value - 2;
 };
 
 onMounted(async () => {
   await getA24Directors();
 
-  // Auto-advance carousel
+  // Muda o par a cada 6 segundos
   featuredIntervalId = setInterval(() => {
     nextFeatured();
-  }, 5000);
+  }, 6000);
 });
 
 onUnmounted(() => {
