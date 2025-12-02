@@ -48,20 +48,17 @@ onMounted(async () => {
   isLoading.value = true;
   try {
     await movieStore.getMovieDetail(Number(props.movieId));
-    
-    // Buscar créditos (elenco e diretores)
+
     const creditsResponse = await api.get(`movie/${props.movieId}/credits`, {
       params: { language: 'pt-BR' }
     });
-    
+
     cast.value = creditsResponse.data.cast.slice(0, 12);
-    
-    // Filtrar diretores
+
     directors.value = creditsResponse.data.crew.filter(
       person => person.job === 'Director'
     );
 
-    // Buscar trailer
     const videosResponse = await api.get(`movie/${props.movieId}/videos`, {
       params: { language: 'pt-BR' }
     });
@@ -71,7 +68,6 @@ onMounted(async () => {
     if (trailers.length > 0) {
       trailer.value = trailers[0];
     } else {
-      // Tentar buscar em inglês se não houver em português
       const videosResponseEN = await api.get(`movie/${props.movieId}/videos`, {
         params: { language: 'en-US' }
       });
@@ -93,25 +89,25 @@ onMounted(async () => {
   <div class="movie-details-page">
     <loading v-model:active="isLoading" is-full-page />
 
-    <MovieDetailsHero 
-      :movie="movie" 
+    <MovieDetailsHero
+      :movie="movie"
       :trailer="trailer"
       @go-back="goBack"
       @open-trailer="openTrailer"
     />
 
-    <MovieDirectorSection 
-      :directors="directors" 
-      @open-director="openDirector" 
+    <MovieDirectorSection
+      :directors="directors"
+      @open-director="openDirector"
     />
 
-    <MovieCastSection 
-      :cast="cast" 
-      @open-actor="openActor" 
+    <MovieCastSection
+      :cast="cast"
+      @open-actor="openActor"
     />
 
-    <MovieCompaniesSection 
-      :companies="movie.production_companies || []" 
+    <MovieCompaniesSection
+      :companies="movie.production_companies || []"
     />
   </div>
 </template>
@@ -124,9 +120,4 @@ onMounted(async () => {
   padding-top: 3.5rem;
 }
 
-@media (max-width: 768px) {
-  .movie-details-page {
-    padding-top: 3rem;
-  }
-}
 </style>

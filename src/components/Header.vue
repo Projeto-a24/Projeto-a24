@@ -97,7 +97,6 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Mobile Nav -->
     <transition name="slide-down">
       <nav v-if="isMobileMenuOpen" class="mobile-nav">
         <router-link to="/" class="mobile-nav-link" @click="isMobileMenuOpen = false">
@@ -112,7 +111,6 @@ onUnmounted(() => {
       </nav>
     </transition>
 
-    <!-- Search Bar Component -->
     <SearchBar
       :is-open="isSearchOpen"
       @close="isSearchOpen = false"

@@ -25,7 +25,7 @@ const getA24Actors = async () => {
       },
     });
     actors.value = response.data.results.slice(0, 20);
-    featuredActors.value = response.data.results.slice(0, 6); // 6 para ter 3 pares
+    featuredActors.value = response.data.results.slice(0, 6); 
   } catch (error) {
     console.error('Erro ao buscar atores:', error);
   }
@@ -38,14 +38,12 @@ const openActor = (actorId) => {
 
 const nextFeatured = () => {
   if (!featuredActors.value.length) return;
-  // Avança 2 posições para mudar o par
   currentFeaturedIndex.value =
     (currentFeaturedIndex.value + 2) % featuredActors.value.length;
 };
 
 const prevFeatured = () => {
   if (!featuredActors.value.length) return;
-  // Volta 2 posições para mudar o par
   currentFeaturedIndex.value =
     currentFeaturedIndex.value - 2 < 0
       ? featuredActors.value.length - 2
@@ -55,7 +53,6 @@ const prevFeatured = () => {
 onMounted(async () => {
   await getA24Actors();
 
-  // Muda o par a cada 6 segundos
   featuredIntervalId = setInterval(() => {
     nextFeatured();
   }, 6000);
@@ -123,9 +120,5 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  .brand-title {
-    font-size: 3rem;
-  }
-}
+
 </style>

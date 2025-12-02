@@ -18,7 +18,6 @@ let featuredIntervalId = null;
 const getA24Directors = async () => {
   isLoading.value = true;
   try {
-    // Buscar filmes A24
     const moviesResponse = await api.get('discover/movie', {
       params: {
         with_companies: 41077,
@@ -27,7 +26,6 @@ const getA24Directors = async () => {
       },
     });
 
-    // Extrair diretores únicos dos filmes
     const directorsMap = new Map();
 
     for (const movie of moviesResponse.data.results.slice(0, 30)) {
@@ -60,7 +58,7 @@ const getA24Directors = async () => {
       .sort((a, b) => b.popularity - a.popularity);
 
     directors.value = directorsArray;
-    featuredDirectors.value = directorsArray.slice(0, 6); // 6 para ter 3 pares
+    featuredDirectors.value = directorsArray.slice(0, 6);
   } catch (error) {
     console.error('Erro ao buscar diretores:', error);
   }
@@ -73,14 +71,12 @@ const openDirector = (directorId) => {
 
 const nextFeatured = () => {
   if (!featuredDirectors.value.length) return;
-  // Avança 2 posições para mudar o par
   currentFeaturedIndex.value =
     (currentFeaturedIndex.value + 2) % featuredDirectors.value.length;
 };
 
 const prevFeatured = () => {
   if (!featuredDirectors.value.length) return;
-  // Volta 2 posições para mudar o par
   currentFeaturedIndex.value =
     currentFeaturedIndex.value - 2 < 0
       ? featuredDirectors.value.length - 2
@@ -90,7 +86,6 @@ const prevFeatured = () => {
 onMounted(async () => {
   await getA24Directors();
 
-  // Muda o par a cada 6 segundos
   featuredIntervalId = setInterval(() => {
     nextFeatured();
   }, 6000);
@@ -158,9 +153,4 @@ onUnmounted(() => {
   margin-top: 1rem;
 }
 
-@media (max-width: 768px) {
-  .brand-title {
-    font-size: 3rem;
-  }
-}
 </style>

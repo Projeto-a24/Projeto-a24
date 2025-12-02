@@ -328,18 +328,5 @@ overflow-y: auto;
   opacity: 0;
 }
 
-@media (max-width: 768px) {
-  .search-overlay {
-    padding: 80px 15px 15px;
-  }
 
-  .search-top {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .btn-close {
-    width: 100%;
-  }
-}
 </style>

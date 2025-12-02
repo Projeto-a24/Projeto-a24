@@ -8,17 +8,14 @@ import SearchBar from '@/components/SearchBar.vue';
 const router = useRouter();
 const isSearchOpen = ref(false);
 
-// Função para abrir a busca (será chamada pelo Header via evento)
 const openSearch = () => {
   isSearchOpen.value = true;
 };
 
-// Função para fechar a busca
 const closeSearch = () => {
   isSearchOpen.value = false;
 };
 
-// Função para lidar com seleção de resultado
 const handleSelectResult = (result) => {
   console.log('Resultado selecionado:', result);
 

@@ -279,15 +279,5 @@ const formatRuntime = (minutes) => {
   color: #ffffff;
 }
 
-@media (max-width: 1024px) {
-  .details-content {
-    grid-template-columns: 250px 1fr;
-    gap: 2rem;
-  }
-
-  .movie-title {
-    font-size: 2.8rem;
-  }
-}
 
 </style>

@@ -129,14 +129,4 @@ const emit = defineEmits(['open-director']);
   letter-spacing: 0.05em;
 }
 
-@media (max-width: 768px) {
-  .director-grid {
-    justify-content: center;
-  }
-  
-  .director-photo-wrapper {
-    width: 120px;
-    height: 120px;
-  }
-}
 </style>
