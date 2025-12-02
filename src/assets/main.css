@@ -1,0 +1,11 @@
+@import './base.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap');
+
+body {
+  background-color: #000;
+  color: #FFF;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
